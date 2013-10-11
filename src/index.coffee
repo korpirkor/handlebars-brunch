@@ -11,6 +11,12 @@ module.exports = class HandlebarsCompiler
     null
 
   compile: (data, path, callback) ->
+    data = data
+    .replace(/<!--[^>]*-->/gm, '') # remove HTML comments
+    .replace(/\r/gm, "\n") # remove Windows-style newlines
+    .replace(/^\s+|\s+$/gm, "") # multiline trim
+    .replace(/\n+/gm, "\n") # remove duplicated newlines
+
     try
       content = handlebars.precompile data
       result = "module.exports = Handlebars.template(#{content});"
