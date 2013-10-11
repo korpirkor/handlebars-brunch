@@ -1,4 +1,5 @@
 handlebars = require 'handlebars'
+umd = require 'umd-wrapper'
 sysPath = require 'path'
 
 module.exports = class HandlebarsCompiler
@@ -11,9 +12,14 @@ module.exports = class HandlebarsCompiler
     null
 
   compile: (data, path, callback) ->
+    data = data
+    .replace(/<!--[^>]*-->/gm, '') # remove HTML comments
+    .replace(/\r/gm, "\n") # remove Windows-style newlines
+    .replace(/^\s+|\s+$/gm, "") # multiline trim
+    .replace(/\n+/gm, "\n") # remove duplicated newlines
+
     try
-      content = handlebars.precompile data
-      result = "module.exports = Handlebars.template(#{content});"
+      result = umd "Handlebars.template(#{handlebars.precompile data})"
     catch err
       error = err
     finally
@@ -21,5 +27,5 @@ module.exports = class HandlebarsCompiler
 
   include: [
     (sysPath.join __dirname, '..', 'vendor',
-      'handlebars.runtime-1.0.rc.1.js')
+      'handlebars.runtime-1.0.js')
   ]

@@ -1,6 +1,6 @@
 {
   "name": "handlebars-brunch",
-  "version": "1.5.0",
+  "version": "1.7.2",
   "description": "Adds Handlebars.js support to brunch.",
   "author": "Paul Miller (http://paulmillr.com/)",
   "homepage": "https://github.com/brunch/handlebars-brunch",
@@ -10,20 +10,15 @@
   },
   "main": "./lib/index",
   "scripts": {
-    "prepublish": "node setup.js prepublish",
-    "postpublish": "node setup.js postpublish",
-    "test": "node setup.js test",
-    "postinstall": "node setup.js test"
-  },
-  "engines": {
-    "node": "~0.6.10 || 0.8 || 0.9"
+    "prepublish": "rm -rf lib && coffee --bare --output lib/ src/",
+    "test": "node_modules/.bin/mocha --require test/common.js"
   },
   "dependencies": {
-    "coffee-script": "1.4.0",
-    "handlebars": "1.0.7"
+    "handlebars": "1.0.12",
+    "umd-wrapper": "~0.1.0"
   },
   "devDependencies": {
-    "mocha": "1.8.1",
-    "chai": "1.4.2"
+    "mocha": "1.11.0",
+    "chai": "1.7.0"
   }
 }
