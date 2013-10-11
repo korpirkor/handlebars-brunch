@@ -13,10 +13,10 @@ module.exports = class HandlebarsCompiler
 
   compile: (data, path, callback) ->
     data = data
+    .replace(/<!--[^>]*-->/gm, '') # remove HTML comments
     .replace(/\r/gm, "\n") # remove Windows-style newlines
     .replace(/^\s+|\s+$/gm, "") # multiline trim
     .replace(/\n+/gm, "\n") # remove duplicated newlines
-    .replace(/<!--[^>]*-->/gm, '') # remove HTML comments
 
     try
       result = umd "Handlebars.template(#{handlebars.precompile data})"
