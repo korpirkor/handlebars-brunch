@@ -9,11 +9,12 @@ module.exports = class HandlebarsCompiler
 
   constructor: (@config) ->
     null
+
   compile: (data, path, callback) ->
     data = data
     .replace(/\r/gm, "\n") # remove Windows-style newlines
     .replace(/\n+/gm, " ") # remove duplicated newlines
-    .replace(/<!--[^>]*-->/gm, '') # remove HTML comments
+    .replace(/<!--.*-->/gm, '') # remove HTML comments
     .replace(/\s+/gm, " ") # remove duplicated spaces, tabs etc
     .replace(/^\s+|\s+$/gm, "") # multiline trim
 
