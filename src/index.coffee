@@ -10,13 +10,23 @@ module.exports = class HandlebarsCompiler
   constructor: (@config) ->
     null
 
+  regexp = 
+    win_newline: /\r/gm
+    duplicated_newline: /\n+/gm
+    html_comments: /<!--(.|\n)*?-->/gm
+    spaces: /\s+/gm
+    trim: /^\s+|\s+$/gm
+
   compile: (data, path, callback) ->
     data = data
-    .replace(/\r/gm, "\n") # remove Windows-style newlines
-    .replace(/\n+/gm, " ") # remove duplicated newlines
-    .replace(/<!--.*-->/gm, '') # remove HTML comments
-    .replace(/\s+/gm, " ") # remove duplicated spaces, tabs etc
-    .replace(/^\s+|\s+$/gm, "") # multiline trim
+    .replace(regexp.win_newline, "\n") # remove Windows-style newlines
+    .replace(regexp.duplicated_newline, " ") # remove duplicated newlines
+    .replace(regexp.html_comments, '') # remove HTML comments
+    .replace(regexp.spaces, " ") # remove duplicated spaces, tabs etc
+    .replace(regexp.trim, "") # multiline trim
+
+    for i of regexp
+      regexp.lastIndex = 0 # to prevent weird behaviour of regexp
 
     try
       content = handlebars.precompile data
