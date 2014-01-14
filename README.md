@@ -35,6 +35,9 @@ exports.config =
         # place list of all helper names here, to make knownHelpersOnly work
         knownHelpers: {someHelper1: true, ifEx: true}
         data: false
+      minifyHtml: true # (bool or object with minifier options)
+      # minifyPlugin: 'regexp' (fast but larger output) or 'html-minify' (extremally slow) or 'html-minifier' (extremally slow)
+      minifyPlugin: 'regexp'
       overrides: (handlebars) ->
         handlebars.JavaScriptCompiler::nameLookup = (parent, name, type) ->
           # Your custom nameLookup method.

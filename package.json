@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "handlebars": "~1.3.0",
-    "umd-wrapper": "~0.1.0"
+    "umd-wrapper": "~0.1.0",
+    "html-minifier": "git://github.com/kangax/html-minifier.git#gh-pages",
+    "html-minify": "git://github.com/yize/html-minify.git"
   },
   "devDependencies": {
     "mocha": "1.11.0",
