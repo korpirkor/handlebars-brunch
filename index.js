@@ -12,6 +12,8 @@ function HandlebarsCompiler(cfg) {
     this.namespace = config.namespace;
     this.pathReplace = config.pathReplace || this.pathReplace;
     if (config.include) this.includeSettings = config.include;
+    // JSON.parse(JSON.stringify(X)) == clone(X)
+    this.precompileConfig = config.precompileConfig ? JSON.parse(JSON.stringify(config.precompileConfig)) : undefined;
   }
   config = config || {};
   this.setInclude();
@@ -42,7 +44,7 @@ HandlebarsCompiler.prototype.pathReplace = /^.*templates\//;
 HandlebarsCompiler.prototype.compile = function(data, path, callback) {
   var error, key, ns, result, source;
   try {
-    source = "Handlebars.template(" + (handlebars.precompile(data, config.precompileConfig)) + ")";
+    source = "Handlebars.template(" + (handlebars.precompile(data, this.precompileConfig)) + ")";
     result = this.namespace ? (ns = this.namespace, key = path.replace(this.pathReplace, '').replace(/\..+?$/, ''), "if (typeof " + ns + " === 'undefined'){ " + ns + " = {} }; " + ns + "['" + key + "'] = " + source) : umd(source);
   } catch (_error) {
     error = _error;

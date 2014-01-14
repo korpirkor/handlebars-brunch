@@ -30,6 +30,11 @@ exports.config =
   ...
   plugins:
     handlebars:
+      precompileConfig:
+        knownHelpersOnly: true
+        # place list of all helper names here, to make knownHelpersOnly work
+        knownHelpers: {someHelper1: true, ifEx: true}
+        data: false
       overrides: (handlebars) ->
         handlebars.JavaScriptCompiler::nameLookup = (parent, name, type) ->
           # Your custom nameLookup method.
