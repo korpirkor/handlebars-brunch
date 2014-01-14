@@ -1,11 +1,11 @@
 var handlebars = require('handlebars');
 var umd = require('umd-wrapper');
 var sysPath = require('path');
-
+var config;
 function HandlebarsCompiler(cfg) {
   if (cfg == null) cfg = {};
   this.optimize = cfg.optimize;
-  var config = cfg.plugins && cfg.plugins.handlebars;
+  config = cfg.plugins && cfg.plugins.handlebars;
   if (config) {
     var overrides = config.overrides;
     if (typeof overrides === 'function') overrides(handlebars);
@@ -13,6 +13,7 @@ function HandlebarsCompiler(cfg) {
     this.pathReplace = config.pathReplace || this.pathReplace;
     if (config.include) this.includeSettings = config.include;
   }
+  config = config || {};
   this.setInclude();
 }
 
@@ -41,7 +42,7 @@ HandlebarsCompiler.prototype.pathReplace = /^.*templates\//;
 HandlebarsCompiler.prototype.compile = function(data, path, callback) {
   var error, key, ns, result, source;
   try {
-    source = "Handlebars.template(" + (handlebars.precompile(data)) + ")";
+    source = "Handlebars.template(" + (handlebars.precompile(data, config.precompileConfig)) + ")";
     result = this.namespace ? (ns = this.namespace, key = path.replace(this.pathReplace, '').replace(/\..+?$/, ''), "if (typeof " + ns + " === 'undefined'){ " + ns + " = {} }; " + ns + "['" + key + "'] = " + source) : umd(source);
   } catch (_error) {
     error = _error;
